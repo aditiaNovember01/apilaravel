@@ -23,9 +23,11 @@ class AuthController extends Controller
         }
 
         // Jika ingin menambah token, tambahkan di sini
+        $token = $user->createToken('api-token')->plainTextToken;
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
+            'token' => $token,
         ]);
     }
 }
