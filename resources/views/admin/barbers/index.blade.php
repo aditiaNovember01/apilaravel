@@ -24,7 +24,13 @@
                         <tr>
                             <td>{{ $barber->id }}</td>
                             <td>{{ $barber->name }}</td>
-                            <td><img src="{{ $barber->photo }}" alt="foto" width="50"></td>
+                            <td>
+                                @if ($barber->photo)
+                                    <img src="{{ asset('storage/' . $barber->photo) }}" alt="foto" width="50">
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td>{{ $barber->specialty }}</td>
                             <td>{{ $barber->status }}</td>
                             <td>

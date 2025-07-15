@@ -19,11 +19,11 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
 
-Route::middleware('auth')->get('/admin', function () {
+Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
 });
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('profile', [\App\Http\Controllers\Admin\UserController::class, 'profile'])->name('profile');
     Route::resource('barbers', AdminBarberController::class);
