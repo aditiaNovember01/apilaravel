@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BarberController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RegisterController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -16,3 +17,4 @@ Route::apiResource('barbers', BarberController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('bookings', BookingController::class);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [RegisterController::class, 'register']);
