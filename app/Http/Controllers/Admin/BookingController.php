@@ -29,12 +29,15 @@ class BookingController extends Controller
             'user_id' => 'required|exists:users,id',
             'barber_id' => 'required|exists:barbers,id',
             'booking_date' => 'required|date',
-            'booking_time' => 'required|date_format:H:i:s',
+            'booking_time' => 'required|date_format:H:i',
             'status' => 'required|in:pending,confirmed,done,cancelled',
             'amount' => 'required|numeric',
             'payment_status' => 'required|in:unpaid,paid',
-            'proof_of_payment' => 'nullable|string|max:255',
+            'proof_of_payment' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        if ($request->hasFile('proof_of_payment')) {
+            $validated['proof_of_payment'] = $request->file('proof_of_payment')->store('bookings', 'public');
+        }
         Booking::create($validated);
         return redirect()->route('admin.bookings.index')->with('success', 'Booking created successfully.');
     }
@@ -60,12 +63,17 @@ class BookingController extends Controller
             'user_id' => 'required|exists:users,id',
             'barber_id' => 'required|exists:barbers,id',
             'booking_date' => 'required|date',
-            'booking_time' => 'required|date_format:H:i:s',
+            'booking_time' => 'required|date_format:H:i',
             'status' => 'required|in:pending,confirmed,done,cancelled',
             'amount' => 'required|numeric',
             'payment_status' => 'required|in:unpaid,paid',
-            'proof_of_payment' => 'nullable|string|max:255',
+            'proof_of_payment' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        if ($request->hasFile('proof_of_payment')) {
+            $validated['proof_of_payment'] = $request->file('proof_of_payment')->store('bookings', 'public');
+        } else {
+            $validated['proof_of_payment'] = $booking->proof_of_payment;
+        }
         $booking->update($validated);
         return redirect()->route('admin.bookings.index')->with('success', 'Booking updated successfully.');
     }

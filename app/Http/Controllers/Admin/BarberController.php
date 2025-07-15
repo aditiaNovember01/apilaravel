@@ -23,10 +23,13 @@ class BarberController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'photo' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'specialty' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
         ]);
+        if ($request->hasFile('photo')) {
+            $validated['photo'] = $request->file('photo')->store('barbers', 'public');
+        }
         Barber::create($validated);
         return redirect()->route('admin.barbers.index')->with('success', 'Barber created successfully.');
     }
@@ -48,10 +51,15 @@ class BarberController extends Controller
         $barber = Barber::findOrFail($id);
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'photo' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'specialty' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
         ]);
+        if ($request->hasFile('photo')) {
+            $validated['photo'] = $request->file('photo')->store('barbers', 'public');
+        } else {
+            $validated['photo'] = $barber->photo;
+        }
         $barber->update($validated);
         return redirect()->route('admin.barbers.index')->with('success', 'Barber updated successfully.');
     }
