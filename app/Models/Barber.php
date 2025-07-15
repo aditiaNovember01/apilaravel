@@ -17,4 +17,6 @@ class Barber extends Model
         'specialty',
         'status',
     ];
+
+    //tes branch dev
 }
