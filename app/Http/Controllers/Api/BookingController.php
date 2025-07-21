@@ -25,13 +25,24 @@ class BookingController extends Controller
             'user_id' => 'required|exists:users,id',
             'barber_id' => 'required|exists:barbers,id',
             'booking_date' => 'required|date',
-            'booking_time' => 'required|date_format:H:i:s',
+            'booking_time' => 'required',
             'status' => 'required|in:pending,confirmed,done,cancelled',
             'amount' => 'required|numeric',
             'payment_status' => 'required|in:unpaid,paid',
-            'proof_of_payment' => 'nullable|string|max:255',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
+
+        // Proses upload file jika ada
+        if ($request->hasFile('proof_of_payment')) {
+            $file = $request->file('proof_of_payment');
+            $path = $file->store('proofs', 'public');
+            $validated['proof_of_payment'] = $path;
+        } else {
+            $validated['proof_of_payment'] = null;
+        }
+
         $booking = Booking::create($validated);
+
         return response()->json($booking, 201);
     }
 
@@ -42,13 +53,22 @@ class BookingController extends Controller
             'user_id' => 'sometimes|required|exists:users,id',
             'barber_id' => 'sometimes|required|exists:barbers,id',
             'booking_date' => 'sometimes|required|date',
-            'booking_time' => 'sometimes|required|date_format:H:i:s',
+            'booking_time' => 'sometimes|required',
             'status' => 'sometimes|required|in:pending,confirmed,done,cancelled',
             'amount' => 'sometimes|required|numeric',
             'payment_status' => 'sometimes|required|in:unpaid,paid',
-            'proof_of_payment' => 'nullable|string|max:255',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
+
+        // Proses upload file jika ada
+        if ($request->hasFile('proof_of_payment')) {
+            $file = $request->file('proof_of_payment');
+            $path = $file->store('proofs', 'public');
+            $validated['proof_of_payment'] = $path;
+        }
+
         $booking->update($validated);
+
         return response()->json($booking);
     }
 
