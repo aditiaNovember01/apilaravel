@@ -29,4 +29,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('barbers', AdminBarberController::class);
     Route::resource('users', AdminUserController::class);
     Route::resource('bookings', AdminBookingController::class);
+    // Tambah route laporan
+    Route::get('reports/booking', [\App\Http\Controllers\Admin\ReportController::class, 'bookingReport'])->name('reports.booking');
+    Route::get('reports/finance', [\App\Http\Controllers\Admin\ReportController::class, 'financeReport'])->name('reports.finance');
 });

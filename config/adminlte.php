@@ -336,6 +336,17 @@ return [
             'url' => 'admin/bookings',
             'icon' => 'fas fa-calendar-check',
         ],
+        // Tambah menu laporan
+        [
+            'text' => 'Laporan Booking',
+            'url' => 'admin/reports/booking',
+            'icon' => 'fas fa-file-alt',
+        ],
+        [
+            'text' => 'Laporan Keuangan',
+            'url' => 'admin/reports/finance',
+            'icon' => 'fas fa-money-bill-wave',
+        ],
     ],
 
     /*
