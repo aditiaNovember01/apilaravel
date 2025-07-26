@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Barber;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class BarberController extends Controller
 {
     public function index()
     {
-        $barbers = Barber::all();
+        $barbers = Barber::with('bookings.user')->get();
         return view('admin.barbers.index', compact('barbers'));
     }
 
@@ -69,5 +70,25 @@ class BarberController extends Controller
         $barber = Barber::findOrFail($id);
         $barber->delete();
         return redirect()->route('admin.barbers.index')->with('success', 'Barber deleted successfully.');
+    }
+
+    public function schedule($id)
+    {
+        $barber = Barber::with(['bookings.user'])->findOrFail($id);
+
+        // Get bookings for the next 7 days
+        $startDate = Carbon::today();
+        $endDate = Carbon::today()->addDays(7);
+
+        // Tampilkan semua booking (confirmed dan done) untuk jadwal lengkap
+        $bookings = $barber->bookings()
+            ->whereBetween('booking_date', [$startDate, $endDate])
+            ->whereIn('status', ['confirmed', 'done'])
+            ->orderBy('booking_date')
+            ->orderBy('booking_time')
+            ->get()
+            ->groupBy('booking_date');
+
+        return view('admin.barbers.schedule', compact('barber', 'bookings', 'startDate', 'endDate'));
     }
 }
