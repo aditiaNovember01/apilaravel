@@ -29,7 +29,7 @@ class BookingController extends Controller
             'status' => 'required|in:pending,confirmed,done,cancelled',
             'amount' => 'required|numeric',
             'payment_status' => 'required|in:unpaid,paid',
-            'proof_of_payment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|',
         ]);
 
         // Proses upload file jika ada
@@ -57,7 +57,7 @@ class BookingController extends Controller
             'status' => 'sometimes|required|in:pending,confirmed,done,cancelled',
             'amount' => 'sometimes|required|numeric',
             'payment_status' => 'sometimes|required|in:unpaid,paid',
-            'proof_of_payment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'proof_of_payment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|',
         ]);
 
         // Proses upload file jika ada
